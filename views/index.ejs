@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RankToCollege - Smart College Predictor</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+</head>
+
+<body class="bg-gray-100 text-gray-800 font-sans">
+  <!-- Navbar -->
+ <nav class="bg-white shadow-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <img src="../images/CollegePredictor.png" alt="Logo" class="h-12 w-12 object-contain" />
+        <a href="/" class="text-4xl font-bold text-blue-600">RankToCollege</a>
+      </div>
+      <div class="hidden md:flex items-center space-x-6">
+        <a href="/" class="hover:text-blue-600">Home</a>
+        <a href="/predict" class="text-gray-800 px-4 py-2 rounded transition-transform transform hover:scale-110 hover:shadow-md hover:shadow-blue-500/40 hover:text-blue-700 duration-300">Predict</a>
+        <a href="/about" class="hover:text-blue-600">About</a>
+        <a href="/contact" class="hover:text-blue-600">Contact</a>
+      </div>
+      <div class="hidden md:flex space-x-3">
+        <% if (isAuthenticated) { %>
+          <span class="text-gray-800 font-medium mt-2">Welcome, <%= userName ? userName.split('@')[0] : 'User' %>!</span>
+          <a href="/logout" class="bg-red-600 text-white px-2 py-2 rounded-lg hover:bg-red-700">Logout</a>
+        <% } else { %>
+          <a href="/login" class="text-blue-600 font-medium mt-2 hover:underline">Sign In</a>
+          <a href="/register" class="bg-blue-600 text-white px-2 py-2 rounded-lg hover:bg-blue-700">Sign Up</a>
+        <% } %>
+      </div>
+      <button class="md:hidden" id="nav-toggle">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+<section class="max-w-7xl mx-auto px-6 py-16 bg-gradient-to-br from-blue-50 to-white mt-6 rounded-3xl shadow-lg flex flex-col-reverse lg:flex-row items-center justify-between gap-12">
+  <!-- Text Content -->
+  <div class="flex-1 text-center lg:text-left">
+    <h1 class="text-4xl sm:text-5xl font-extrabold text-blue-900 leading-tight mb-6">
+      Find the Best College<br class="hidden sm:block" />
+      <span class="text-blue-600">with Smart Predictions</span>
+    </h1>
+    <p class="text-lg text-gray-700 mb-8">
+      Estimate your rank and explore top colleges tailored to your goals using our AI-powered tools.
+    </p>
+    <form class="flex flex-col sm:flex-row items-center bg-white rounded-full px-4 py-2 shadow-md max-w-xl mx-auto lg:mx-0" action="/colleges/read" method="post">
+      <input type="text" placeholder="Search colleges..." class="flex-1 bg-transparent outline-none py-2 px-2 text-gray-800" name="name"/>
+      <button type="submit" class="mt-2 sm:mt-0 bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition-all">
+        🔍 Search
+      </button>
+    </form>
+  </div>
+
+  <!-- Image -->
+  <div class="flex-1 flex justify-center">
+    <img src="https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=600&q=80"
+      alt="Hero" class="w-full max-w-sm rounded-2xl shadow-xl transform hover:scale-105 transition duration-500" />
+  </div>
+</section>
+
+
+  
+  <!-- Steps Section -->
+<section class="flex justify-center mt-10 ">
+  <div class="w-full max-w-2xl px-4">
+    <div class="bg-white p-6 rounded-lg shadow text-center">
+      <div class="text-3xl mb-2">🎓</div>
+      <h3 class="text-xl font-semibold mb-2">College Predictor</h3>
+      <p class="text-gray-600 mb-4">Get a list of colleges you can target based on your predicted rank.</p>
+      <form action="/predict" method="get">
+        <button  id="predictBtn" type="submit" class="bg-blue-600 text-white px-6 py-3 rounded transition-transform transform hover:scale-110 hover:shadow-lg hover:shadow-blue-500/50 hover:bg-blue-700 duration-300"
+>Try College Predictor</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+
+  <!-- Confused Illustration -->
+  <section class="text-center py-12">
+    <h2 class="text-2xl text-blue-900 font-semibold mb-4">Are you confused about colleges?</h2>
+    <img src="https://www.precollege.in/home/illustration.svg" alt="Illustration" class="mx-auto max-w-xs" />
+  </section>
+
+  <!-- Benefits Section -->
+  <section class="max-w-6xl mx-auto px-4 grid md:grid-cols-4 sm:grid-cols-2 gap-6 mt-10">
+    <div class="bg-white p-6 rounded-lg shadow text-center">
+      <div class="text-2xl mb-2">💡</div>
+      <h4 class="font-semibold text-lg">Personalized Recommendations</h4>
+      <p class="text-gray-600 text-sm">Get tailored college and branch suggestions just for you.</p>
+    </div>
+    <div class="bg-white p-6 rounded-lg shadow text-center">
+      <div class="text-2xl mb-2">📣</div>
+      <h4 class="font-semibold text-lg">Your Best Fit</h4>
+      <p class="text-gray-600 text-sm">Discover the college and course that match your profile.</p>
+    </div>
+    <div class="bg-white p-6 rounded-lg shadow text-center">
+      <div class="text-2xl mb-2">👥</div>
+      <h4 class="font-semibold text-lg">Your College Compass</h4>
+      <p class="text-gray-600 text-sm">Navigate your path from rank to the right college.</p>
+    </div>
+    <div class="bg-white p-6 rounded-lg shadow text-center">
+      <div class="text-2xl mb-2">📊</div>
+      <h4 class="font-semibold text-lg">Prediction Tools</h4>
+      <p class="text-gray-600 text-sm">Use advanced Rank & College Predictor tools.</p>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="max-w-4xl mx-auto px-4 mt-12 grid grid-cols-1 sm:grid-cols-3 text-center gap-6 bg-white rounded-lg shadow py-8">
+    <div>
+      <p class="text-3xl text-blue-600 font-bold">24x7</p>
+      <p class="text-gray-600">Instant, Free & Accurate Results</p>
+    </div>
+    <div>
+      <p class="text-3xl text-blue-600 font-bold">100+</p>
+      <p class="text-gray-600">Engineering Colleges Covered</p>
+    </div>
+    <div>
+      <p class="text-3xl text-blue-600 font-bold">100%</p>
+      <p class="text-gray-600">Genuine Predictions</p>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+<section class="max-w-3xl mx-auto px-4 py-12">
+  <h2 class="text-3xl font-bold text-blue-800 text-center mb-8">Frequently Asked Questions</h2>
+
+  <div id="faq-container" class="space-y-4">
+    <!-- FAQ Item 1 -->
+    <div class="faq-item border-b border-gray-300 pb-3">
+      <div class="faq-question text-lg font-semibold text-gray-800 hover:text-blue-600 cursor-pointer w-full">
+        1. What is RankToCollege?
+      </div>
+      <div class="faq-answer hidden mt-2 text-gray-600 transition duration-300 ease-in-out">
+        RankToCollege is a platform designed to help students make better college choices through data-driven predictions and smart guidance tools.
+      </div>
+    </div>
+
+    <!-- FAQ Item 2 -->
+    <div class="faq-item border-b border-gray-300 pb-3">
+      <div class="faq-question text-lg font-semibold text-gray-800 hover:text-blue-600 cursor-pointer w-full">
+        2. How is it different from other college predictors?
+      </div>
+      <div class="faq-answer hidden mt-2 text-gray-600 transition duration-300 ease-in-out">
+        Unlike generic predictors, RankToCollege uses real admission data, gender/category filters, and advanced algorithms to offer highly accurate and personalized results.
+      </div>
+    </div>
+
+    <!-- FAQ Item 3 -->
+    <div class="faq-item border-b border-gray-300 pb-3">
+      <div class="faq-question text-lg font-semibold text-gray-800 hover:text-blue-600 cursor-pointer w-full">
+        3. Is this platform free to use?
+      </div>
+      <div class="faq-answer hidden mt-2 text-gray-600 transition duration-300 ease-in-out">
+        Yes, RankToCollege offers completely free predictions and tools to support every student's college journey.
+      </div>
+    </div>
+
+    <!-- FAQ Item 4 -->
+    <div class="faq-item border-b border-gray-300 pb-3">
+      <div class="faq-question text-lg font-semibold text-gray-800 hover:text-blue-600 cursor-pointer w-full">
+        4. Which exams and quotas are supported?
+      </div>
+      <div class="faq-answer hidden mt-2 text-gray-600 transition duration-300 ease-in-out">
+        Currently, we support JoSAA and CSAB counseling with Home State (HS), Other State (OS), and All India (AI) quotas.
+      </div>
+    </div>
+
+    <!-- FAQ Item 5 -->
+    <div class="faq-item border-b border-gray-300 pb-3">
+      <div class="faq-question text-lg font-semibold text-gray-800 hover:text-blue-600 cursor-pointer w-full">
+        5. Can I talk to mentors or seniors?
+      </div>
+      <div class="faq-answer hidden mt-2 text-gray-600 transition duration-300 ease-in-out">
+        Yes! We are adding features soon where you’ll be able to connect directly with verified college seniors for personalized guidance.
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-gray-200 mt-16">
+    <div class="max-w-7xl mx-auto px-4 py-10 grid md:grid-cols-4 gap-6">
+      <div>
+        <h4 class="font-bold text-white text-lg mb-2">RankToCollege</h4>
+        <p class="text-sm text-gray-400">Helping students make better college decisions with accurate predictions.</p>
+      </div>
+      <div>
+        <h4 class="font-semibold mb-2">Quick Links</h4>
+        <ul class="space-y-1">
+          <li><a href="/" class="hover:underline">Home</a></li>
+          <li><a href="/predict" class="hover:underline">Predict</a></li>
+          <li><a href="/contact" class="hover:underline">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-semibold mb-2">Counselling Authorities</h4>
+        <ul class="space-y-1">
+          <li>JoSAA</li>
+          <li>JAC Delhi</li>
+          <li>WBJEE</li>
+          <li>COMEDK</li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-semibold mb-2">Policies</h4>
+        <ul class="space-y-1">
+          <li><a href="/privacy-policy" class="hover:underline">Privacy Policy</a></li>
+          <li><a href="/terms-and-conditions" class="hover:underline">Terms & Conditions</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="text-center text-sm text-gray-400 py-4 border-t border-gray-700">
+      &copy; 2025 RankToCollege. All rights reserved.
+    </div>
+  </footer>
+   <!-- Scripts -->
+  <script>
+    // Show FAQ answer on hover
+  document.querySelectorAll('.faq-item').forEach(item => {
+    const question = item.querySelector('.faq-question');
+    const answer = item.querySelector('.faq-answer');
+
+    question.addEventListener('mouseenter', () => {
+      answer.classList.remove('hidden');
+    });
+
+    item.addEventListener('mouseleave', () => {
+      answer.classList.add('hidden');
+    });
+  });
+ 
+  document.addEventListener("DOMContentLoaded", function () {
+    const toggle = document.getElementById("nav-toggle");
+    const menu = document.getElementById("mobile-menu");
+
+    toggle.addEventListener("click", () => {
+      menu.classList.toggle("hidden");
+    });
+  });
+
+
+
+  // Script to add/remove hover animation manually (optional enhancement) 
+  // const btn = document.getElementById('predictBtn');
+
+  // btn.addEventListener('mouseenter', () => {
+  //   btn.classList.add('scale-110');
+  // });
+
+  // btn.addEventListener('mouseleave', () => {
+  //   btn.classList.remove('scale-110');
+  // });
+  </script>
+</body>
+
+</html>

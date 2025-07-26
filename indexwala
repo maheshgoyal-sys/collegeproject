@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>JEE College Predictor</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f8f9fa;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.05);
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #4f46e5;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:disabled {
+      background-color: #aaa;
+    }
+    .results-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    .results-table th, .results-table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+    }
+    .results-table th {
+      background-color: #f0f0f0;
+    }
+    .errors {
+      background-color: #ffe0e0;
+      color: #b00020;
+      padding: 10px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      border: 1px solid #b00020;
+    }
+
+    @media (max-width: 600px) {
+      .results-table th, .results-table td {
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>JEE College Predictor</h1>
+
+    <% if (locals.errors && errors.length > 0) { %>
+      <div class="errors">
+        <ul>
+          <% errors.forEach(error => { %>
+            <li><%= error %></li>
+          <% }); %>
+        </ul>
+      </div>
+    <% } %>
+
+    <form action="/predict" method="POST">
+      <div class="form-group">
+        <label for="crlRank">Your CRL Rank:</label>
+        <input type="number" id="crlRank" name="crlRank" required value="<%= locals.inputData ? inputData.crlRank : '' %>">
+      </div>
+
+      <div class="form-group">
+        <label for="category">Category:</label>
+        <select id="category" name="category" required onchange="toggleCategoryRank()">
+          <option value="">Select Category</option>
+          <option value="GEN" <%= inputData?.category === 'GEN' ? 'selected' : '' %>>General</option>
+          <option value="EWS" <%= inputData?.category === 'EWS' ? 'selected' : '' %>>EWS</option>
+          <option value="OBC-NCL" <%= inputData?.category === 'OBC-NCL' ? 'selected' : '' %>>OBC-NCL</option>
+          <option value="SC" <%= inputData?.category === 'SC' ? 'selected' : '' %>>SC</option>
+          <option value="ST" <%= inputData?.category === 'ST' ? 'selected' : '' %>>ST</option>
+        </select>
+      </div>
+
+      <div class="form-group" id="categoryRankGroup" style="display: <%= (inputData?.category !== 'GEN' && inputData?.category !== '') ? 'block' : 'none' %>;">
+        <label for="categoryRank">Category Rank:</label>
+        <input type="number" id="categoryRank" name="categoryRank" value="<%= inputData?.categoryRank || '' %>">
+      </div>
+
+      <div class="form-group">
+        <label for="homeStateStatus">Home State Quota?</label>
+        <select id="homeStateStatus" name="homeStateStatus" required onchange="toggleHomeState()">
+          <option value="">Select Option</option>
+          <option value="yes" <%= inputData?.homeStateStatus === 'yes' ? 'selected' : '' %>>Yes</option>
+          <option value="no" <%= inputData?.homeStateStatus === 'no' ? 'selected' : '' %>>No</option>
+        </select>
+      </div>
+
+      <div class="form-group" id="homeStateSelectGroup" style="display: <%= inputData?.homeStateStatus === 'yes' ? 'block' : 'none' %>;">
+        <label for="homeState">Home State:</label>
+        <select id="homeState" name="homeState">
+          <option value="">Select Your State</option>
+          <% ['Andhra Pradesh','Bihar','Delhi','Gujarat','Haryana','Karnataka','Madhya Pradesh','Maharashtra','Punjab','Rajasthan','Tamil Nadu','Telangana','Uttar Pradesh','West Bengal','Others'].forEach(state => { %>
+            <option value="<%= state %>" <%= inputData?.homeState === state ? 'selected' : '' %>><%= state %></option>
+          <% }); %>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender" required>
+          <option value="">Select Gender</option>
+          <option value="male" <%= inputData?.gender === 'male' ? 'selected' : '' %>>Male</option>
+          <option value="female" <%= inputData?.gender === 'female' ? 'selected' : '' %>>Female</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="counsellingType">Counselling Type:</label>
+        <select id="counsellingType" name="counsellingType" required>
+          <option value="">Select Type</option>
+          <option value="JOSAA" <%= inputData?.counsellingType === 'JOSAA' ? 'selected' : '' %>>JoSAA</option>
+          <option value="CSAB" <%= inputData?.counsellingType === 'CSAB' ? 'selected' : '' %>>CSAB</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="pwdStatus">PwD Status:</label>
+        <select id="pwdStatus" name="pwdStatus" required onchange="togglePwdRank()">
+          <option value="">Select Option</option>
+          <option value="yes" <%= inputData?.pwdStatus === 'yes' ? 'selected' : '' %>>Yes</option>
+          <option value="no" <%= inputData?.pwdStatus === 'no' ? 'selected' : '' %>>No</option>
+        </select>
+      </div>
+
+      <div class="form-group" id="pwdRankGroup" style="display: <%= inputData?.pwdStatus === 'yes' ? 'block' : 'none' %>;">
+        <label for="pwdRank">PwD Rank:</label>
+        <input type="number" id="pwdRank" name="pwdRank" value="<%= inputData?.pwdRank || '' %>">
+      </div>
+
+      <button type="submit" id="submitBtn">Predict Colleges</button>
+    </form>
+
+    <% if (locals.predictionResult) { %>
+      <h2>Prediction Results:</h2>
+      <% if (typeof predictionResult === 'string') { %>
+        <p><%= predictionResult %></p>
+      <% } else if (predictionResult.length > 0) { %>
+        <table class="results-table">
+          <thead>
+            <tr>
+              <th>Institute</th>
+              <th>Branch</th>
+              <th>Closing Rank</th>
+              <th>Counselling</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% predictionResult.forEach(college => { %>
+              <tr>
+                <td><a href="/colleges/read?name=<%= encodeURIComponent(college.instituteName) %>" target="_blank"><%= college.instituteName %></a></td>
+                <td><%= college.branch %></td>
+                <td><%= college.closingRank %></td>
+                <td><%= college.counsellingType %></td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      <% } else { %>
+        <p>No colleges found for your input.</p>
+      <% } %>
+    <% } %>
+  </div>
+
+  <script>
+    function toggleCategoryRank() {
+      const cat = document.getElementById('category').value;
+      const group = document.getElementById('categoryRankGroup');
+      if (cat && cat !== 'GEN') {
+        group.style.display = 'block';
+        document.getElementById('categoryRank').setAttribute('required', 'required');
+      } else {
+        group.style.display = 'none';
+        document.getElementById('categoryRank').removeAttribute('required');
+        document.getElementById('categoryRank').value = '';
+      }
+    }
+
+    function togglePwdRank() {
+      const val = document.getElementById('pwdStatus').value;
+      const group = document.getElementById('pwdRankGroup');
+      if (val === 'yes') {
+        group.style.display = 'block';
+        document.getElementById('pwdRank').setAttribute('required', 'required');
+      } else {
+        group.style.display = 'none';
+        document.getElementById('pwdRank').removeAttribute('required');
+        document.getElementById('pwdRank').value = '';
+      }
+    }
+
+    function toggleHomeState() {
+      const val = document.getElementById('homeStateStatus').value;
+      const group = document.getElementById('homeStateSelectGroup');
+      const select = document.getElementById('homeState');
+      if (val === 'yes') {
+        group.style.display = 'block';
+        select.setAttribute('required', 'required');
+      } else {
+        group.style.display = 'none';
+        select.removeAttribute('required');
+        select.value = '';
+      }
+    }
+
+    window.onload = function () {
+      toggleCategoryRank();
+      togglePwdRank();
+      toggleHomeState();
+    };
+
+    document.querySelector('form').addEventListener('submit', function () {
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.innerText = 'Predicting...';
+    });
+  </script>
+</body>
+</html>

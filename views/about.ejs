@@ -1,0 +1,169 @@
+<!-- About Page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us - RankToCollege</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 text-gray-900">
+   <!-- Navbar -->
+  <nav class="bg-white shadow-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <img src="../images/CollegePredictor.png" alt="Logo" class="h-12 w-12 object-contain" />
+        <a href="/" class="text-4xl font-bold text-blue-600">RankToCollege</a>
+      </div>
+      <div class="hidden md:flex items-center space-x-6">
+        <a href="/" class="hover:text-blue-600">Home</a>
+        <a href="/predict" class="text-gray-800 px-4 py-2 rounded transition-transform transform hover:scale-110 hover:shadow-md hover:shadow-blue-500/40 hover:text-blue-700 duration-300">Predict</a>
+        <a href="/about" class="hover:text-blue-600">About</a>
+        <a href="/contact" class="hover:text-blue-600">Contact</a>
+      </div>
+     <div class="hidden md:flex space-x-3">
+        <% if (isAuthenticated) { %>
+          <span class="text-gray-800 font-medium mt-2">Welcome, <%= userName ? userName.split('@')[0] : 'User' %>!</span>
+          <a href="/logout" class="bg-red-600 text-white px-2 py-2 rounded-lg hover:bg-red-700">Logout</a>
+        <% } else { %>
+          <a href="/login" class="text-blue-600 font-medium mt-2 hover:underline">Sign In</a>
+          <a href="/register" class="bg-blue-600 text-white px-2 py-2 rounded-lg hover:bg-blue-700">Sign Up</a>
+        <% } %>
+      </div>
+      <button class="md:hidden" id="nav-toggle">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+  <section class="max-w-&xl mx-auto py-16 px-6">
+    <h1 class="text-4xl font-bold text-blue-700 mb-6">About RankToCollege</h1>
+    <p class="text-lg text-gray-700 mb-4">
+      RankToCollege is an intelligent college prediction platform that helps students make well-informed decisions after entrance exams like JEE, WBJEE, and COMEDK.
+    </p>
+    <p class="text-lg text-gray-700 mb-4">
+      With support for multiple counselling authorities like JoSAA, JAC Delhi, and others, we deliver precise college suggestions based on your rank, category, state quota, and preferences.
+    </p>
+    <p class="text-lg text-gray-700 mb-10">
+      Our mission is to simplify the college admission journey by offering smart filters, verified cutoffs, and helpful guidance.
+    </p>
+
+    <!-- Our Mission -->
+    <div class="mb-10">
+      <h2 class="text-2xl font-bold text-blue-700 mb-4 flex items-center gap-2">
+        <img src="https://img.icons8.com/color/48/target.png" class="h-6 w-6"> Our Mission
+      </h2>
+      <p class="text-gray-700">To empower students and parents with transparent, data-driven insights that simplify the college admission process.</p>
+    </div>
+
+    <!-- Why Trust Us -->
+    <div class="mb-10">
+      <h2 class="text-2xl font-bold text-blue-700 mb-4 flex items-center gap-2">
+        <img src="https://img.icons8.com/color/48/like.png" class="h-6 w-6"> Why Trust Us
+      </h2>
+      <p class="text-gray-700">Our predictions are based on verified cutoffs, real-time trends, and expert-reviewed logic. Thousands of students have successfully predicted their college using our tool.</p>
+    </div>
+
+    <!-- How We Stand Out -->
+    <div class="mb-10">
+      <h2 class="text-2xl font-bold text-blue-700 mb-4 flex items-center gap-2">
+        <img src="https://img.icons8.com/color/48/idea.png" class="h-6 w-6"> How We Stand Out
+      </h2>
+      <ul class="list-disc list-inside text-gray-700">
+        <li>Supports all major counselling authorities</li>
+        <li>Advanced filtering by category, quota, and home state</li>
+        <li>Real-time updates based on latest data</li>
+        <li>User-friendly, mobile-first design</li>
+        <li>1-on-1 guidance with mentors</li>
+      </ul>
+    </div>
+
+    <!-- Who We Are -->
+    <!-- <div class="mb-10">
+      <h2 class="text-2xl font-bold text-blue-700 mb-6 flex items-center gap-2">
+        <img src="https://icons.veryicon.com/png/o/miscellaneous/site-icon-library/team-28.png" class="h-6 w-6"> Who We Are
+      </h2>
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="bg-white shadow rounded p-4">
+          <h3 class="font-semibold text-lg">Mayur Sharma</h3>
+          <p class="text-gray-600">Backend Developer</p>
+          <p class="text-sm text-blue-600">mayur@example.com</p>
+        </div>
+        <div class="bg-white shadow rounded p-4">
+          <h3 class="font-semibold text-lg">Ananya Gupta</h3>
+          <p class="text-gray-600">Frontend Developer</p>
+          <p class="text-sm text-blue-600">ananya@example.com</p>
+        </div>
+        <div class="bg-white shadow rounded p-4">
+          <h3 class="font-semibold text-lg">Rohan Verma</h3>
+          <p class="text-gray-600">UI/UX Designer</p>
+          <p class="text-sm text-blue-600">rohan@example.com</p>
+        </div>
+        <div class="bg-white shadow rounded p-4">
+          <h3 class="font-semibold text-lg">Sneha Patel</h3>
+          <p class="text-gray-600">Product Manager</p>
+          <p class="text-sm text-blue-600">sneha@example.com</p>
+        </div>
+        <div class="bg-white shadow rounded p-4">
+          <h3 class="font-semibold text-lg">Amit Joshi</h3>
+          <p class="text-gray-600">Data Analyst</p>
+          <p class="text-sm text-blue-600">amit@example.com</p>
+        </div>
+      </div>
+    </div> -->
+    <!-- Who We Are -->
+<section class="bg-white py-10 px-4 rounded-lg shadow-md mb-10">
+  <div class="max-w-4xl mx-auto text-center">
+    <h2 class="text-3xl font-bold text-blue-700 mb-6 flex justify-center items-center gap-2">
+      <img src="https://icons.veryicon.com/png/o/miscellaneous/site-icon-library/team-28.png" class="h-8 w-8"> 
+      Who We Are
+    </h2>
+    <p class="text-gray-700 text-lg leading-relaxed">
+      We are a team of <span class="text-blue-600 font-semibold">passionate programmers</span> and <span class="text-blue-600 font-semibold">problem solvers</span> on a mission to empower students through data-driven college predictions. 
+      From backend architecture to intuitive interfaces, we believe in <span class="text-blue-600 font-semibold">progressive learning</span>, <span class="text-blue-600 font-semibold">clean code</span>, and <span class="text-blue-600 font-semibold">student-first design</span>. <br class="hidden md:block">
+      Whether you're aiming for an IIT, NIT, or top state college — we’re here to guide you.
+    </p>
+  </div>
+</section>
+
+    <!-- <a href="/contact" class="text-blue-500">Contact Us</a> -->
+  </section>
+  <!-- Footer -->
+<footer class="bg-gray-800 text-gray-200 mt-16">
+  <div class="max-w-7xl mx-auto px-4 py-10 grid md:grid-cols-4 gap-6">
+    <div>
+      <h4 class="font-bold text-white text-lg mb-2">RankToCollege</h4>
+      <p class="text-sm text-gray-400">Helping students make better college decisions with accurate predictions.</p>
+    </div>
+    <div>
+      <h4 class="font-semibold mb-2">Quick Links</h4>
+      <ul class="space-y-1">
+        <li><a href="/" class="hover:underline">Home</a></li>
+        <li><a href="/predict" class="hover:underline">Predict</a></li>
+        <li><a href="/contact" class="hover:underline">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="font-semibold mb-2">Counselling Authorities</h4>
+      <ul class="space-y-1">
+        <li>JoSAA</li>
+        <li>JAC Delhi</li>
+        <li>WBJEE</li>
+        <li>COMEDK</li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="font-semibold mb-2">Policies</h4>
+      <ul class="space-y-1">
+        <li><a href="/privacy-policy" class="hover:underline">Privacy Policy</a></li>
+        <li><a href="/terms-and-conditions" class="hover:underline">Terms & Conditions</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="text-center text-sm text-gray-400 py-4 border-t border-gray-700">
+    &copy; 2025 RankToCollege. All rights reserved.
+  </div>
+</footer>
+</body>
+</html>

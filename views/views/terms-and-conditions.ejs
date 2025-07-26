@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Terms & Conditions - RankToCollege</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-50 text-gray-900">
+    <!-- Navbar -->
+  <nav class="bg-white shadow-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <img src="../images/CollegePredictor.png" alt="Logo" class="h-12 w-12 object-contain" />
+        <a href="/" class="text-4xl font-bold text-blue-600">RankToCollege</a>
+      </div>
+      <div class="hidden md:flex items-center space-x-6">
+        <a href="/" class="hover:text-blue-600">Home</a>
+        <a href="/predict" class="text-gray-800 px-4 py-2 rounded transition-transform transform hover:scale-110 hover:shadow-md hover:shadow-blue-500/40 hover:text-blue-700 duration-300">Predict</a>
+        <a href="/about" class="hover:text-blue-600">About</a>
+        <a href="/contact" class="hover:text-blue-600">Contact</a>
+      </div>
+      <div class="hidden md:flex space-x-3">
+        <% if (isAuthenticated) { %>
+          <span class="text-gray-800 font-medium mt-2">Welcome, <%= userName ? userName.split('@')[0] : 'User' %>!</span>
+          <a href="/logout" class="bg-red-600 text-white px-2 py-2 rounded-lg hover:bg-red-700">Logout</a>
+        <% } else { %>
+          <a href="/login" class="text-blue-600 font-medium mt-2 hover:underline">Sign In</a>
+          <a href="/register" class="bg-blue-600 text-white px-2 py-2 rounded-lg hover:bg-blue-700">Sign Up</a>
+        <% } %>
+      </div>
+      <button class="md:hidden" id="nav-toggle">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+    <!-- Terms and Conditions Content -->
+    <div class="px-6 md:mx-24 pt-12">
+      <h1 class="text-3xl font-bold text-blue-700 mb-6">Terms & Conditions</h1>
+      <p class="text-base text-gray-700 mb-4">
+        For the purpose of these Terms and Conditions, the term "we", "us", "our" shall mean RankToCollege. "you", "your", "user", “visitor” shall mean any natural or legal person who is visiting our website and/or agreed to purchase from us.
+      </p>
+      <ul class="list-disc list-inside text-base text-gray-700 space-y-2">
+        <li>The content of the pages of this website is subject to change without notice.</li>
+        <li>We do not guarantee the accuracy or completeness of information; you acknowledge such content may contain inaccuracies or errors.</li>
+        <li>Your use of any information on our website is at your own risk; we are not liable for it meeting your requirements.</li>
+        <li>Design, layout, and content on the site is our property; reproduction is prohibited without permission.</li>
+        <li>All trademarks not owned by us are acknowledged on the site.</li>
+        <li>Unauthorized use of our content may result in a claim for damages or a criminal offense.</li>
+        <li>Our website may contain links to other sites provided for your convenience.</li>
+        <li>Linking to our website requires prior written consent from RankToCollege.</li>
+        <li>All disputes are subject to the laws of India.</li>
+        <li>We are not liable for transaction failures due to cardholder authorization limits.</li>
+      </ul>
+<!-- 
+      <h2 class="text-2xl font-semibold text-blue-700 mt-8">Cancellation & Refund Policy</h2>
+      <p class="text-base text-gray-700 mt-2">
+        No cancellations or refunds are entertained once a transaction is completed.
+      </p> -->
+
+      <!-- <h2 class="text-2xl font-semibold text-blue-700 mt-8">Shipping & Delivery Policy</h2>
+      <p class="text-base text-gray-700 mt-2">
+        Shipping is not applicable for our services as all offerings are digital.
+      </p>-->
+    </div> 
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+      <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-3 gap-4">
+        <div>
+          <h4 class="text-lg font-bold mb-2">RankToCollege</h4>
+          <p>
+            Helping students make better college decisions with accurate predictions.
+          </p>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-2">Quick Links</h4>
+          <ul>
+            <li><a href="/" class="hover:underline">Home</a></li>
+            <li><a href="/predict" class="hover:underline">Predict</a></li>
+            <li><a href="/contact" class="hover:underline">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-2">Policies</h4>
+          <ul>
+            <li><a href="/privacy-policy" class="hover:underline">Privacy Policy</a></li>
+            <li><a href="/terms-and-conditions" class="hover:underline">Terms and Conditions</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="text-center mt-6 text-sm text-gray-300">
+        &copy; <%= new Date().getFullYear() %> RankToCollege. All rights reserved.
+      </div>
+    </footer>
+  </body>
+</html>

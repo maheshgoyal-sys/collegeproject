@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Privacy Policy - RankToCollege</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-50 text-gray-900">
+    <!-- Navbar -->
+  <nav class="bg-white shadow-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <img src="../images/CollegePredictor.png" alt="Logo" class="h-12 w-12 object-contain" />
+        <a href="/" class="text-4xl font-bold text-blue-600">RankToCollege</a>
+      </div>
+      <div class="hidden md:flex items-center space-x-6">
+        <a href="/" class="hover:text-blue-600">Home</a>
+        <a href="/predict" class="text-gray-800 px-4 py-2 rounded transition-transform transform hover:scale-110 hover:shadow-md hover:shadow-blue-500/40 hover:text-blue-700 duration-300">Predict</a>
+        <a href="/about" class="hover:text-blue-600">About</a>
+        <a href="/contact" class="hover:text-blue-600">Contact</a>
+      </div>
+      <div class="hidden md:flex space-x-3">
+        <% if (isAuthenticated) { %>
+          <span class="text-gray-800 font-medium mt-2">Welcome, <%= userName ? userName.split('@')[0] : 'User' %>!</span>
+          <a href="/logout" class="bg-red-600 text-white px-2 py-2 rounded-lg hover:bg-red-700">Logout</a>
+        <% } else { %>
+          <a href="/login" class="text-blue-600 font-medium mt-2 hover:underline">Sign In</a>
+          <a href="/register" class="bg-blue-600 text-white px-2 py-2 rounded-lg hover:bg-blue-700">Sign Up</a>
+        <% } %>
+      </div>
+      <button class="md:hidden" id="nav-toggle">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+    <!-- Privacy Policy Content -->
+    <div class="px-6 md:mx-24 pt-12">
+      <h1 class="text-3xl font-bold text-blue-700 mb-6">Privacy Policy</h1>
+      <p class="text-base text-gray-700 mb-4">
+        RankToCollege (“us”, “we”, or “our”) operates the ranktocollege.in website (the “Service”).
+        This page informs you of our policies regarding the collection, use and disclosure of Personal Information
+        when you use our Service. By using the Service, you agree to the collection and use of information in accordance
+        with this policy.
+      </p>
+
+      <h2 class="text-xl font-semibold text-blue-700 mt-6">Information Collection and Use</h2>
+      <p class="text-base text-gray-700 mb-4">
+        We may ask you to provide us with certain personally identifiable information that can be used to contact or identify you.
+        Personally identifiable information may include, but is not limited to: email address, name, phone number, etc.
+      </p>
+
+      <h2 class="text-xl font-semibold text-blue-700 mt-6">Log Data</h2>
+      <p class="text-base text-gray-700 mb-4">
+        We collect browser data such as IP address, browser version, pages visited, and timestamps.
+        This data helps us improve our service.
+      </p>
+
+      <h2 class="text-xl font-semibold text-blue-700 mt-6">Cookies</h2>
+      <p class="text-base text-gray-700 mb-4">
+        Cookies are used to collect information and improve our service. You can refuse cookies via browser settings,
+        though some features may not function properly without them.
+      </p>
+
+      <h2 class="text-xl font-semibold text-blue-700 mt-6">Security</h2>
+      <p class="text-base text-gray-700 mb-4">
+        We value your trust in providing us your Personal Information, thus we strive to use commercially acceptable means of protecting it.
+        But remember, no method of transmission over the internet is 100% secure.
+      </p>
+
+      <h2 class="text-xl font-semibold text-blue-700 mt-6">Changes to This Privacy Policy</h2>
+      <p class="text-base text-gray-700 mb-4">
+        We may update our Privacy Policy from time to time. We advise you to review this page periodically for any changes.
+        Changes are effective immediately after they are posted on this page.
+      </p>
+
+      <h2 class="text-xl font-semibold text-blue-700 mt-6">Contact Us</h2>
+      <p class="text-base text-gray-700 mb-12">
+        If you have any questions about this Privacy Policy, feel free to <a href="/contact" class="text-blue-600 underline">Contact Us</a>.
+      </p>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+      <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-3 gap-4">
+        <div>
+          <h4 class="text-lg font-bold mb-2">RankToCollege</h4>
+          <p>
+            Helping students make better college decisions with accurate predictions.
+          </p>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-2">Quick Links</h4>
+          <ul>
+            <li><a href="/" class="hover:underline">Home</a></li>
+            <li><a href="/predict" class="hover:underline">Predict</a></li>
+            <li><a href="/contact" class="hover:underline">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-2">Policies</h4>
+          <ul>
+            <li><a href="/privacy-policy" class="hover:underline">Privacy Policy</a></li>
+            <li><a href="/terms-and-conditions" class="hover:underline">Terms and Conditions</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="text-center mt-6 text-sm text-gray-300">
+        &copy; <%= new Date().getFullYear() %> RankToCollege. All rights reserved.
+      </div>
+    </footer>
+  </body>
+</html>

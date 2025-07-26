@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up | RankToCollege</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1e40af;
+      --secondary: #f1f5f9;
+      --white: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --shadow: 0 4px 24px rgba(30, 64, 175, 0.08);
+      --radius: 0.8rem;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--secondary);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .signup-container {
+      background: var(--white);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      max-width: 400px;
+      width: 100%;
+    }
+
+    h2 {
+      margin-bottom: 0.5rem;
+      font-size: 1.75rem;
+      font-weight: 700;
+    }
+
+    p.subtext {
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 0.6rem 0.75rem;
+      margin-bottom: 1.2rem;
+      border-radius: var(--radius);
+      border: 1px solid #cbd5e1;
+      font-size: 1rem;
+    }
+
+    .submit-btn {
+      background: var(--text);
+      color: var(--white);
+      border: none;
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 1rem;
+      border-radius: var(--radius);
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .submit-btn:hover {
+      background: var(--primary);
+    }
+
+    .footer-text {
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .footer-text a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .footer-text a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="signup-container">
+    <h2>Sign up</h2>
+    <p class="subtext">Create your account to continue</p>
+
+    <form method="post" action="/register">
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" placeholder="Your name" required>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="Choose a password" required>
+
+      <button type="submit" class="submit-btn">Sign Up</button>
+    </form>
+
+    <div class="footer-text">
+      Already have an account? <a href="/login">Sign in</a>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RankToCollege - Smart College Predictor</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1e40af;
+      --secondary: #f1f5f9;
+      --text: #1e293b;
+      --muted: #64748b;
+      --white: #fff;
+      --radius: 1rem;
+      --shadow: 0 4px 12px rgba(30, 64, 175, 0.08);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--secondary);
+      color: var(--text);
+    }
+
+    .hero {
+      padding: 3rem 1rem;
+      text-align: center;
+      background: linear-gradient(to right, #004b8d, #1976d2);
+      color: white;
+    }
+
+    .hero h1 {
+      font-size: 2.8rem; /* Slightly larger */
+      margin-bottom: 0.8rem;
+    }
+
+    .form-section {
+      background-color: #fff;
+      padding: 3.5rem 3rem; /* More padding */
+      border-radius: var(--radius);
+      box-shadow: 0 8px 25px rgba(30, 64, 175, 0.15); /* Stronger shadow */
+      max-width: 780px; /* Slightly wider */
+      margin: 4rem auto; /* More vertical margin */
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative; /* For potential future creative elements */
+      overflow: hidden; /* To contain pseudo-elements */
+    }
+
+    .form-section::before { /* Decorative pseudo-element */
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 10px;
+      background: linear-gradient(to right, #004b8d, #1976d2);
+      border-top-left-radius: var(--radius);
+      border-top-right-radius: var(--radius);
+    }
+
+    .form-section:hover {
+      transform: translateY(-8px); /* More pronounced lift */
+      box-shadow: 0 12px 30px rgba(30, 64, 175, 0.25); /* Even stronger shadow on hover */
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.8rem; /* Increased gap between form groups */
+      width: 100%;
+      max-width: 550px; /* Wider form for larger inputs */
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 0.5rem; /* Reduced margin, gap handles spacing */
+    }
+
+    .form-group label {
+        margin-bottom: 0.7rem; /* More space below label */
+        font-weight: 600; /* Bolder labels */
+        color: var(--text);
+        font-size: 1.15rem; /* Larger label text */
+    }
+
+    form input[type="number"],
+    form select {
+      padding: 1.1rem 1.4rem; /* More padding */
+      font-size: 1.15rem; /* Larger input text */
+      border: 1px solid #d1d5db; /* Lighter border color */
+      border-radius: 0.85rem; /* Slightly more rounded */
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      background-color: #f9fafb; /* Light background for inputs */
+      -webkit-appearance: none; /* Remove default styling for better consistency */
+      -moz-appearance: none;
+      appearance: none;
+    }
+
+    form input[type="number"]:focus,
+    form select:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.3); /* Stronger focus shadow */
+      background-color: var(--white); /* White background on focus */
+    }
+
+    .radio-group {
+      padding-top: 0.5rem;
+    }
+
+    .radio-group label {
+      font-size: 1.05rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    button[type="submit"] {
+      padding: 1.2rem; /* More padding */
+      font-size: 1.25rem; /* Larger button text */
+      border-radius: 0.85rem; /* Slightly more rounded */
+      background: linear-gradient(to right, #0056b3, #007bff); /* More vibrant gradient */
+      color: white;
+      box-shadow: 0 8px 20px rgba(0, 86, 179, 0.4); /* Stronger button shadow */
+      transition: all 0.3s ease;
+      font-weight: bold;
+      cursor: pointer;
+      letter-spacing: 0.05em; /* Slight letter spacing */
+      border: none; /* Remove default button border */
+    }
+
+    button[type="submit"]:hover {
+      background: linear-gradient(to right, #004085, #0056b3); /* Darker gradient on hover */
+      transform: scale(1.03) translateY(-2px); /* More pronounced lift and slight scale */
+      box-shadow: 0 10px 25px rgba(0, 86, 179, 0.5);
+    }
+
+    button[type="submit"]:disabled {
+        background: #a0aec0; /* Grey out when disabled */
+        cursor: not-allowed;
+        box-shadow: none;
+        transform: none;
+    }
+
+    .college-card {
+      background-color: #f9fafb;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      border-left: 4px solid #1976d2;
+    }
+
+    .college-card h3 {
+      margin-bottom: 0.4rem;
+      color: #004b8d;
+    }
+
+    .college-card p {
+      margin: 0.2rem 0;
+      color: #444;
+    }
+
+    .info-section {
+      padding: 2.5rem 1rem; /* More padding */
+      background-color: #e3f2fd;
+    }
+
+    .info-section h2 {
+      color: #004b8d;
+      font-size: 2.2rem; /* Larger heading */
+      text-align: center;
+      margin-bottom: 2.5rem; /* More margin */
+    }
+
+    .info-section > div {
+      display: grid;
+      gap: 2rem; /* Increased gap */
+      max-width: 950px; /* Wider info section */
+      margin: auto;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid for steps */
+    }
+
+    .info-section .step {
+      background: #fff;
+      padding: 1.5rem 1.8rem; /* More padding */
+      border-radius: 12px; /* More rounded */
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08); /* Stronger shadow */
+      text-align: center; /* Center text in steps */
+      border-top: 5px solid #1976d2; /* Accent border */
+    }
+
+    .info-section .step h3 {
+        font-size: 1.3rem; /* Larger step titles */
+        color: #004b8d;
+        margin-bottom: 0.8rem;
+    }
+
+    .info-section .step p {
+        font-size: 1rem;
+        color: #333;
+    }
+
+    .container h1 {
+        text-align: center;
+        margin-bottom: 2rem;
+        font-size: 2.5rem; /* Larger form title */
+        color: var(--primary-dark);
+        margin-top: 1.5rem; /* Adjusted margin */
+        font-weight: 700; /* Bolder title */
+    }
+
+    .errors {
+        background-color: #fee2e2;
+        color: #dc2626;
+        padding: 1.2rem; /* More padding */
+        border-radius: 0.6rem; /* Slightly more rounded */
+        margin-bottom: 1.8rem; /* More margin */
+        border: 1px solid #ef4444;
+        font-size: 1rem; /* Larger error text */
+        text-align: center; /* Center error messages */
+    }
+
+    .errors ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .errors li {
+        margin-bottom: 0.5rem;
+    }
+
+    .results-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 2.5rem; /* More margin */
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08); /* Shadow for table */
+        border-radius: 0.8rem;
+        overflow: hidden; /* To ensure border-radius applies to table */
+    }
+
+    .results-table th, .results-table td {
+        border: 1px solid #eee; /* Lighter border */
+        padding: 1rem; /* More padding */
+        text-align: left;
+        font-size: 1rem; /* Slightly larger table text */
+    }
+
+    .results-table th {
+        background-color: #e0f2f7; /* Light blue header */
+        font-weight: 700; /* Bolder header text */
+        color: #004b8d;
+    }
+
+    .results-table tr:nth-child(even){background-color: #f8fcfd;} /* Lighter alternate row color */
+
+    .results-table tr:hover {background-color: #e6f7ff;} /* Light blue hover effect */
+
+    .results-table a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .results-table a:hover {
+        text-decoration: underline;
+        color: var(--primary-dark);
+    }
+
+    /* Adjustments for smaller screens */
+    @media (max-width: 768px) {
+        .form-section {
+            padding: 2rem 1.5rem;
+            margin: 2rem auto;
+        }
+
+        form {
+            gap: 1.2rem;
+            max-width: 100%;
+        }
+
+        .form-group label {
+            font-size: 1.05rem;
+        }
+
+        form input[type="number"],
+        form select {
+            padding: 0.9rem 1.1rem;
+            font-size: 1rem;
+        }
+
+        button[type="submit"] {
+            padding: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .hero h1 {
+            font-size: 2rem;
+        }
+
+        .container h1 {
+            font-size: 2rem;
+        }
+
+        .info-section > div {
+            grid-template-columns: 1fr; /* Stack steps on small screens */
+        }
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+  <nav class="bg-white shadow-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <img src="../images/CollegePredictor.png" alt="Logo" class="h-12 w-12 object-contain" />
+        <a href="/" class="text-4xl font-bold text-blue-600">RankToCollege</a>
+      </div>
+      <div class="hidden md:flex items-center space-x-6">
+        <a href="/" class="hover:text-blue-600">Home</a>
+        <a href="/predict" class="text-gray-800 px-4 py-2 rounded transition-transform transform hover:scale-110 hover:shadow-md hover:shadow-blue-500/40 hover:text-blue-700 duration-300">Predict</a>
+        <a href="/about" class="hover:text-blue-600">About</a>
+        <a href="/contact" class="hover:text-blue-600">Contact</a>
+      </div>
+       <div class="hidden md:flex space-x-3">
+        <% if (isAuthenticated) { %>
+          <span class="text-gray-800 font-medium mt-2">Welcome, <%= userName ? userName.split('@')[0] : 'User' %>!</span>
+          <a href="/logout" class="bg-red-600 text-white px-2 py-2 rounded-lg hover:bg-red-700">Logout</a>
+        <% } else { %>
+          <a href="/login" class="text-blue-600 font-medium mt-2 hover:underline">Sign In</a>
+          <a href="/register" class="bg-blue-600 text-white px-2 py-2 rounded-lg hover:bg-blue-700">Sign Up</a>
+        <% } %>
+      </div>
+      <button class="md:hidden" id="nav-toggle">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+  <section class="hero">
+    <h1>Find the Best College Based on Your JEE Rank</h1>
+    <p>Enter your details to discover colleges that match your score and preferences.</p>
+  </section>
+  <div class="form-section"> <h1>JEE College Predictor</h1>
+
+    <% if (locals.errors && errors.length > 0) { %>
+      <div class="errors">
+        <ul>
+          <% errors.forEach(error => { %>
+            <li><%= error %></li>
+          <% }); %>
+        </ul>
+      </div>
+    <% } %>
+
+    <form action="/predict" method="POST">
+      <div class="form-group">
+        <label for="crlRank">Your CRL Rank:</label>
+        <input type="number" id="crlRank" name="crlRank" required value="<%= locals.inputData ? inputData.crlRank : '' %>" placeholder="e.g., 15000">
+      </div>
+
+      <div class="form-group">
+        <label for="category">Category:</label>
+        <select id="category" name="category" required onchange="toggleCategoryRank()">
+          <option value="">Select Category</option>
+          <option value="GEN" <%= inputData?.category === 'GEN' ? 'selected' : '' %>>General</option>
+          <option value="EWS" <%= inputData?.category === 'EWS' ? 'selected' : '' %>>EWS</option>
+          <option value="OBC-NCL" <%= inputData?.category === 'OBC-NCL' ? 'selected' : '' %>>OBC-NCL</option>
+          <option value="SC" <%= inputData?.category === 'SC' ? 'selected' : '' %>>SC</option>
+          <option value="ST" <%= inputData?.category === 'ST' ? 'selected' : '' %>>ST</option>
+        </select>
+      </div>
+
+      <div class="form-group" id="categoryRankGroup" style="display: <%= (inputData?.category !== 'GEN' && inputData?.category !== '') ? 'block' : 'none' %>;">
+        <label for="categoryRank">Category Rank:</label>
+        <input type="number" id="categoryRank" name="categoryRank" value="<%= inputData?.categoryRank || '' %>" placeholder="Your Category Rank (if applicable)">
+      </div>
+
+      <div class="form-group">
+        <label for="homeStateStatus">Home State Quota?</label>
+        <select id="homeStateStatus" name="homeStateStatus" required onchange="toggleHomeState()">
+          <option value="">Select Option</option>
+          <option value="yes" <%= inputData?.homeStateStatus === 'yes' ? 'selected' : '' %>>Yes</option>
+          <option value="no" <%= inputData?.homeStateStatus === 'no' ? 'selected' : '' %>>No</option>
+        </select>
+      </div>
+
+      <div class="form-group" id="homeStateSelectGroup" style="display: <%= inputData?.homeStateStatus === 'yes' ? 'block' : 'none' %>;">
+        <label for="homeState">Home State:</label>
+        <select id="homeState" name="homeState">
+          <option value="">Select Your State</option>
+          <% ['Andhra Pradesh','Bihar','Delhi','Gujarat','Haryana','Karnataka','Madhya Pradesh','Maharashtra','Punjab','Rajasthan','Tamil Nadu','Telangana','Uttar Pradesh','West Bengal','Others'].forEach(state => { %>
+            <option value="<%= state %>" <%= inputData?.homeState === state ? 'selected' : '' %>><%= state %></option>
+          <% }); %>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender" required>
+          <option value="">Select Gender</option>
+          <option value="male" <%= inputData?.gender === 'male' ? 'selected' : '' %>>Male</option>
+          <option value="female" <%= inputData?.gender === 'female' ? 'selected' : '' %>>Female</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="counsellingType">Counselling Type:</label>
+        <select id="counsellingType" name="counsellingType" required>
+          <option value="">Select Type</option>
+          <option value="JOSAA" <%= inputData?.counsellingType === 'JOSAA' ? 'selected' : '' %>>JoSAA</option>
+          <option value="CSAB" <%= inputData?.counsellingType === 'CSAB' ? 'selected' : '' %>>CSAB</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="pwdStatus">PwD Status:</label>
+        <select id="pwdStatus" name="pwdStatus" required onchange="togglePwdRank()">
+          <option value="">Select Option</option>
+          <option value="yes" <%= inputData?.pwdStatus === 'yes' ? 'selected' : '' %>>Yes</option>
+          <option value="no" <%= inputData?.pwdStatus === 'no' ? 'selected' : '' %>>No</option>
+        </select>
+      </div>
+
+      <div class="form-group" id="pwdRankGroup" style="display: <%= inputData?.pwdStatus === 'yes' ? 'block' : 'none' %>;">
+        <label for="pwdRank">PwD Rank:</label>
+        <input type="number" id="pwdRank" name="pwdRank" value="<%= inputData?.pwdRank || '' %>" placeholder="Your PwD Rank (if applicable)">
+      </div>
+
+      <button type="submit" id="submitBtn">Predict Colleges</button>
+    </form>
+
+    <% if (locals.predictionResult) { %>
+      <div class="w-full mt-8"> <h2 class="text-2xl font-bold text-blue-800 mb-4 text-center">Prediction Results:</h2>
+        <% if (typeof predictionResult === 'string') { %>
+          <p class="text-center text-gray-700 text-lg"><%= predictionResult %></p>
+        <% } else if (predictionResult.length > 0) { %>
+          <table class="results-table">
+            <thead>
+              <tr>
+                <th>Institute</th>
+                <th>Branch</th>
+                <th>Closing Rank</th>
+                <th>Counselling</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% predictionResult.forEach(college => { %>
+                <tr>
+                  <td><a href="/colleges/read?name=<%= encodeURIComponent(college.instituteName) %>" target="_blank"><%= college.instituteName %></a></td>
+                  <td><%= college.branch %></td>
+                  <td><%= college.closingRank %></td>
+                  <td><%= college.counsellingType %></td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        <% } else { %>
+          <p class="text-center text-gray-700 text-lg">No colleges found for your input. Try adjusting your criteria!</p>
+        <% } %>
+      </div>
+    <% } %>
+  </div>
+ <section class="info-section">
+    <h2>🚀 How Our College Predictor Works</h2>
+    <div>
+      <div class="step">
+        <h3>1. Enter your JEE Main Rank</h3>
+        <p>Use your All India Rank or Percentile. We convert it accurately for better prediction.</p>
+      </div>
+      <div class="step">
+        <h3>2. Select your Category, Gender, and State</h3>
+        <p>Different reservation and quota policies apply. Provide correct info.</p>
+      </div>
+      <div class="step">
+        <h3>3. Pick Counselling Platform</h3>
+        <p>Choose JoSAA or CSAB to match correct college lists.</p>
+      </div>
+      <div class="step">
+        <h3>4. See Your Predicted Colleges</h3>
+        <p>We show matching colleges from 2024 JoSAA closing ranks.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-gray-800 text-white py-8 mt-12">
+    <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-4 gap-4">
+      <div>
+        <h4 class="text-lg font-bold mb-2">RankToCollege</h4>
+        <p>Helping students make better college decisions with accurate predictions.</p>
+      </div>
+      <div>
+        <h4 class="font-semibold mb-2">Quick Links</h4>
+        <ul>
+          <li><a href="/" class="hover:underline">Home</a></li>
+          <li><a href="/predict" class="hover:underline">Predict</a></li>
+          <li><a href="/contact" class="hover:underline">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-semibold mb-2">Counselling Authorities</h4>
+        <ul>
+          <li>JoSAA</li>
+          <li>JAC Delhi</li>
+          <li>WBJEE</li>
+          <li>COMEDK</li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-semibold mb-2">Policies</h4>
+        <ul>
+          <li><a href="/privacy-policy" class="hover:underline">Privacy Policy</a></li>
+          <li><a href="/terms-and-conditions" class="hover:underline">Terms & Conditions</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-6 text-sm text-gray-300">
+      &copy; 2025 RankToCollege. All rights reserved.
+    </div>
+  </footer>
+  <script>
+    function toggleCategoryRank() {
+      const cat = document.getElementById('category').value;
+      const group = document.getElementById('categoryRankGroup');
+      if (cat && cat !== 'GEN') {
+        group.style.display = 'block';
+        document.getElementById('categoryRank').setAttribute('required', 'required');
+      } else {
+        group.style.display = 'none';
+        document.getElementById('categoryRank').removeAttribute('required');
+        document.getElementById('categoryRank').value = '';
+      }
+    }
+
+    function togglePwdRank() {
+      const val = document.getElementById('pwdStatus').value;
+      const group = document.getElementById('pwdRankGroup');
+      if (val === 'yes') {
+        group.style.display = 'block';
+        document.getElementById('pwdRank').setAttribute('required', 'required');
+      } else {
+        group.style.display = 'none';
+        document.getElementById('pwdRank').removeAttribute('required');
+        document.getElementById('pwdRank').value = '';
+      }
+    }
+
+    function toggleHomeState() {
+      const val = document.getElementById('homeStateStatus').value;
+      const group = document.getElementById('homeStateSelectGroup');
+      const select = document.getElementById('homeState');
+      if (val === 'yes') {
+        group.style.display = 'block';
+        select.setAttribute('required', 'required');
+      } else {
+        group.style.display = 'none';
+        select.removeAttribute('required');
+        select.value = '';
+      }
+    }
+
+    window.onload = function () {
+      toggleCategoryRank();
+      togglePwdRank();
+      toggleHomeState();
+    };
+
+    document.querySelector('form').addEventListener('submit', function () {
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.innerText = 'Predicting...';
+    });
+  </script>
+</body>
+</html>
